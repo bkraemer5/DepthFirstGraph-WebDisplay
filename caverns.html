@@ -1,0 +1,184 @@
+<!doctype html> <html> <head>
+	<meta charset="utf-8" />
+	<title>Asgwilanga Caverns</title>
+	<link rel="stylesheet" href="assets/style.css"/>
+	<style>
+		 
+	</style>
+</head>
+
+<body>
+<h1> Asgwilanga Caverns Algorithm </h1>
+<h4>time-stamp: ( 2019-11-09 ) - Brittany Kraemer</h4>
+
+<canvas id="grid" width="730" height="730"></canvas>
+
+</body>
+
+<script src="assets/node.js"></script>
+<script src="assets/graph.js"></script>
+<script src="assets/stack.js"></script>
+<script src="assets/js_functions.js"></script>
+<script>
+	var canvas = document.getElementById( "grid" );
+	var context = canvas.getContext( "2d" );
+
+	var myGraph = new Graph(22);
+
+	// maxed out 7
+	var point1 = new Node(5, 3, 7);
+	var point2 = new Node(3, 5, 7);
+	var point3 = new Node(4, 4, 7);
+	var point4 = new Node(6, 2, 7);
+	var point5 = new Node(2, 6, 7);
+	var point6 = new Node(1, 7, 7);
+	var point7 = new Node(7, 1, 7);
+	// maxed out 8
+	var point8 = new Node(5, 8, 2);
+	var point9 = new Node(2, 8, 5);
+	var point10 = new Node(4, 8, 3);
+	var point11 = new Node(3, 8, 4);
+	var point12 = new Node(6, 8, 1);
+	var point13 = new Node(1, 8, 6);
+	// maxed out 7 or 8, including 0
+	var point14 = new Node(0, 8, 7);
+	var point15 = new Node(7, 8, 0);
+	var point16 = new Node(8, 7, 0);
+	var point17 = new Node(8, 0, 7);
+	// maxed out 12, including 0
+	var point18 = new Node(12, 1, 2);
+	var point19 = new Node(12, 2, 1);
+	var point20 = new Node(12, 3, 0);
+	var point21 = new Node(12, 0, 3);
+	// max value
+	var point22 = new Node(15, 0, 0);
+
+	var listOfPoints = [point1, point2, point3, point4, point5, point6, point7,
+		point8, point9, point10, point11, point12, point13, point14, point15, point16, 
+		point17, point18, point19, point20, point21, point22];
+
+	for (i of listOfPoints) {
+		myGraph.addVertex(i); 
+		console.log(i);
+		myGraph.addEdge(i, listOfPoints);
+	}
+
+	myGraph.printGraph();
+
+	/*
+	for (i of listOfPoints) {
+		drawRedCircle(context, i.posX, i.posY, i.hexstring);
+	}
+
+	//drawRedCircle(context, listOfPoints[4].posX, listOfPoints[4].posY, listOfPoints[4].hexstring);
+
+
+	//function depthFirstSearch(value, node) {
+		/* 
+		single same rule: the arrival room shares EXACTLY ONE unchanged ID part
+		ex. (15,0,0) --> (7,8,0)
+
+		zero max rule: of the TWO UNCHANGED parts, One of them has to be either zero, or the max value (can have both!)
+
+		check to make sure visited = false! if you visit, set to true
+		*/
+	var root = listOfPoints[21];
+	var stack = new Stack();
+	
+	function graphAlgorithm(currentNode) {
+		console.log(currentNode);
+		if (currentNode.visited == false) {
+			stack.push(currentNode);
+		}	
+		adjacencies = myGraph.grabEdges(currentNode);
+		currentNode.visited = true;
+		drawRedCircle(context, currentNode.posX, currentNode.posY, currentNode.hexstring);
+		for (i of adjacencies) {
+			if(i.visited == false) {
+				if(i.first == currentNode.first) {
+					if (i.second == 8 || i.second == 0 || i.third == 7 || i.third == 0) {
+						// run function again with this node
+						console.log("first");
+						drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+						setTimeout(graphAlgorithm, 1000, i);
+						return;
+					}
+				}
+				else if (i.second == currentNode.second) {
+					if (i.first == 12 || i.first == 0 || i.third == 7 || i.third == 0) {
+						// run function again with this node
+						console.log("second");
+						drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+						setTimeout(graphAlgorithm, 1000, i);
+						return;
+					}
+				}
+				else if (i.third == currentNode.third) {
+					if (i.first == 12 || i.first == 0 || i.second == 8 || i.second == 0) {
+						// run function again with this node
+						console.log("third");
+						drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+						setTimeout(graphAlgorithm, 1000, i);
+						return;
+					}
+				}
+			}
+		}
+		stack.pop();
+		if (stack.isEmpty()) {
+			return;
+		}
+		setTimeout(graphAlgorithm, 1000, stack.peek());
+	}
+
+	graphAlgorithm(root);
+	//drawRedCircle(context, listOfPoints[4].posX, listOfPoints[4].posY, listOfPoints[4].hexstring);
+/*
+	// round 2 -------------------
+	console.log(currentNode);
+	for (i of adjacencies) {
+		if(i.visited == false) {
+			if(i.first == currentNode.first) {
+				if (i.second == 8 || i.second == 0 || i.third == 7 || i.third == 0) {
+					// run function again with this node
+					i.visited = true;
+					console.log("first");
+					drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+					currentNode = i;
+					break;
+				}
+			}
+			else if (i.second == currentNode.second) {
+				if (i.first == 12 || i.first == 0 || i.third == 7 || i.third == 0) {
+					// run function again with this node
+					i.visited = true;
+					console.log("second");
+					drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+					currentNode = i;
+					break;
+				}
+			}
+			else if (i.third == currentNode.third) {
+				if (i.first == 12 || i.first == 0 || i.second == 8 || i.second == 0) {
+					// run function again with this node
+					i.visited = true;
+					console.log("third");
+					drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+					currentNode = i;
+					break;
+				}
+			}
+		}
+	}
+	
+*/
+	//drawLine(context, currentNode.posX, currentNode.posY, adjacencies[12].posX, adjacencies[12].posY)
+
+	//drawLine(context, listOfPoints[0].posX, listOfPoints[0].posY, listOfPoints[21].posX, listOfPoints[21].posY)
+	
+
+
+
+</script>
+
+</html>
