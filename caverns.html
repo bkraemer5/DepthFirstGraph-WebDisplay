@@ -65,23 +65,6 @@
 
 	myGraph.printGraph();
 
-	/*
-	for (i of listOfPoints) {
-		drawRedCircle(context, i.posX, i.posY, i.hexstring);
-	}
-
-	//drawRedCircle(context, listOfPoints[4].posX, listOfPoints[4].posY, listOfPoints[4].hexstring);
-
-
-	//function depthFirstSearch(value, node) {
-		/* 
-		single same rule: the arrival room shares EXACTLY ONE unchanged ID part
-		ex. (15,0,0) --> (7,8,0)
-
-		zero max rule: of the TWO UNCHANGED parts, One of them has to be either zero, or the max value (can have both!)
-
-		check to make sure visited = false! if you visit, set to true
-		*/
 	var root = listOfPoints[21];
 	var stack = new Stack();
 	
@@ -98,27 +81,27 @@
 				if(i.first == currentNode.first) {
 					if (i.second == 8 || i.second == 0 || i.third == 7 || i.third == 0) {
 						// run function again with this node
-						console.log("first");
-						drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
-						setTimeout(graphAlgorithm, 1000, i);
+						drawRedCircle(context, i.posX, i.posY, i.hexstring);
+						drawPath(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+						setTimeout(graphAlgorithm, 1500, i);
 						return;
 					}
 				}
 				else if (i.second == currentNode.second) {
 					if (i.first == 12 || i.first == 0 || i.third == 7 || i.third == 0) {
 						// run function again with this node
-						console.log("second");
-						drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
-						setTimeout(graphAlgorithm, 1000, i);
+						drawRedCircle(context, i.posX, i.posY, i.hexstring);
+						drawPath(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+						setTimeout(graphAlgorithm, 1500, i);
 						return;
 					}
 				}
 				else if (i.third == currentNode.third) {
 					if (i.first == 12 || i.first == 0 || i.second == 8 || i.second == 0) {
 						// run function again with this node
-						console.log("third");
-						drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
-						setTimeout(graphAlgorithm, 1000, i);
+						drawRedCircle(context, i.posX, i.posY, i.hexstring);
+						drawPath(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
+						setTimeout(graphAlgorithm, 1500, i);
 						return;
 					}
 				}
@@ -132,52 +115,6 @@
 	}
 
 	graphAlgorithm(root);
-	//drawRedCircle(context, listOfPoints[4].posX, listOfPoints[4].posY, listOfPoints[4].hexstring);
-/*
-	// round 2 -------------------
-	console.log(currentNode);
-	for (i of adjacencies) {
-		if(i.visited == false) {
-			if(i.first == currentNode.first) {
-				if (i.second == 8 || i.second == 0 || i.third == 7 || i.third == 0) {
-					// run function again with this node
-					i.visited = true;
-					console.log("first");
-					drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
-					currentNode = i;
-					break;
-				}
-			}
-			else if (i.second == currentNode.second) {
-				if (i.first == 12 || i.first == 0 || i.third == 7 || i.third == 0) {
-					// run function again with this node
-					i.visited = true;
-					console.log("second");
-					drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
-					currentNode = i;
-					break;
-				}
-			}
-			else if (i.third == currentNode.third) {
-				if (i.first == 12 || i.first == 0 || i.second == 8 || i.second == 0) {
-					// run function again with this node
-					i.visited = true;
-					console.log("third");
-					drawLine(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
-					currentNode = i;
-					break;
-				}
-			}
-		}
-	}
-	
-*/
-	//drawLine(context, currentNode.posX, currentNode.posY, adjacencies[12].posX, adjacencies[12].posY)
-
-	//drawLine(context, listOfPoints[0].posX, listOfPoints[0].posY, listOfPoints[21].posX, listOfPoints[21].posY)
-	
-
-
 
 </script>
 

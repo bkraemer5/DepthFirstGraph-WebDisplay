@@ -34,10 +34,10 @@ function Node(first, second, third) {
 			sum *= 2;
 			break;
 	}
-	var random = Math.floor(Math.random() * (700-sum-sum) + sum);
+	var random = Math.floor(Math.random() * (730-sum-sum) + sum);
 
 	var positive = sum;
-	var negative = 700-sum;
+	var negative = 730-sum;
 
 	var decision = Math.floor(Math.random() * 4 + 1);
 
