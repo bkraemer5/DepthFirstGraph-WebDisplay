@@ -23,7 +23,10 @@
 	var canvas = document.getElementById( "grid" );
 	var context = canvas.getContext( "2d" );
 
+	// initialization of Graph
 	var myGraph = new Graph(22);
+
+	// MAX VALUE: (12, 8, 7)
 
 	// maxed out 7
 	var point1 = new Node(5, 3, 7);
@@ -33,6 +36,7 @@
 	var point5 = new Node(2, 6, 7);
 	var point6 = new Node(1, 7, 7);
 	var point7 = new Node(7, 1, 7);
+
 	// maxed out 8
 	var point8 = new Node(5, 8, 2);
 	var point9 = new Node(2, 8, 5);
@@ -40,66 +44,112 @@
 	var point11 = new Node(3, 8, 4);
 	var point12 = new Node(6, 8, 1);
 	var point13 = new Node(1, 8, 6);
+
 	// maxed out 7 or 8, including 0
 	var point14 = new Node(0, 8, 7);
 	var point15 = new Node(7, 8, 0);
 	var point16 = new Node(8, 7, 0);
 	var point17 = new Node(8, 0, 7);
+
 	// maxed out 12, including 0
 	var point18 = new Node(12, 1, 2);
 	var point19 = new Node(12, 2, 1);
 	var point20 = new Node(12, 3, 0);
 	var point21 = new Node(12, 0, 3);
-	// max value
+
+	// beginning point
 	var point22 = new Node(15, 0, 0);
 
+
+	// an array that holds all of the Nodes
 	var listOfPoints = [point1, point2, point3, point4, point5, point6, point7,
 		point8, point9, point10, point11, point12, point13, point14, point15, point16, 
 		point17, point18, point19, point20, point21, point22];
 
+	// uses nodes from the listOfPoints array to load the Graph
 	for (i of listOfPoints) {
 		myGraph.addVertex(i); 
-		console.log(i);
 		myGraph.addEdge(i, listOfPoints);
 	}
 
+
+	// prints to the console what is stored in the Graph
 	myGraph.printGraph();
 
+
+	// the root is the starting point (15, 0, 0)
 	var root = listOfPoints[21];
+
+	// initialization of a Stack for depth first traversal
 	var stack = new Stack();
-	
+
+
+	// Depth-First Algorithm of traversing through the graph
 	function graphAlgorithm(currentNode) {
-		console.log(currentNode);
+
+		// pushes node to stack if it has not been visited yet
 		if (currentNode.visited == false) {
 			stack.push(currentNode);
-		}	
+		}
+
+		// loads an 'adjacencies' array with all the points that are connected to current node
 		adjacencies = myGraph.grabEdges(currentNode);
+
+		// marks the node we are on as 'visited'
 		currentNode.visited = true;
 		drawRedCircle(context, currentNode.posX, currentNode.posY, currentNode.hexstring);
+
+		// iterates through each node in the array
 		for (i of adjacencies) {
+
+			// checks to make sure node has NOT been visited already
 			if(i.visited == false) {
+
+				// SINGLE SAME RULE
+				// checks if the first two values match
 				if(i.first == currentNode.first) {
+
+					// ZERO MAX RULE
+					// checks if either the second or third values are 0 or maxed out
 					if (i.second == 8 || i.second == 0 || i.third == 7 || i.third == 0) {
-						// run function again with this node
-						drawRedCircle(context, i.posX, i.posY, i.hexstring);
+						
+						// display new node on the graph
+						// pass in destination node to graphAlgorithm
+						drawBlueCircle(context, i.posX, i.posY, i.hexstring);
 						drawPath(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
 						setTimeout(graphAlgorithm, 1500, i);
 						return;
 					}
 				}
+
+				// SINGLE SAME RULE
+				// checks if the second two values match
 				else if (i.second == currentNode.second) {
+
+					// ZERO MAX RULE
+					// checks if either the first or third values are 0 or maxed out
 					if (i.first == 12 || i.first == 0 || i.third == 7 || i.third == 0) {
-						// run function again with this node
-						drawRedCircle(context, i.posX, i.posY, i.hexstring);
+
+						// display new node on the graph
+						// pass in destination node to graphAlgorithm
+						drawBlueCircle(context, i.posX, i.posY, i.hexstring);
 						drawPath(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
 						setTimeout(graphAlgorithm, 1500, i);
 						return;
 					}
 				}
+
+				// SINGLE SAME RULE
+				// checks if the third two values match
 				else if (i.third == currentNode.third) {
+
+					// ZERO MAX RULE
+					// checks if either the first or third values are 0 or maxed out
 					if (i.first == 12 || i.first == 0 || i.second == 8 || i.second == 0) {
-						// run function again with this node
-						drawRedCircle(context, i.posX, i.posY, i.hexstring);
+
+						// display new node on the graph
+						// pass in destination node to graphAlgorithm
+						drawBlueCircle(context, i.posX, i.posY, i.hexstring);
 						drawPath(context, currentNode.posX, currentNode.posY, i.posX, i.posY);
 						setTimeout(graphAlgorithm, 1500, i);
 						return;
@@ -107,13 +157,20 @@
 				}
 			}
 		}
+		// once this point is reached, there are no more connections to the current node
+		// eliminate the top element from the stack
 		stack.pop();
+
+		// once we have finished looking through all nodes, return.
 		if (stack.isEmpty()) {
 			return;
 		}
+
+		// passes in the element that is at the top of the stack to the algorithm
 		setTimeout(graphAlgorithm, 1000, stack.peek());
 	}
 
+	// call to the graphAlgorithm recursive function starting at the root
 	graphAlgorithm(root);
 
 </script>
